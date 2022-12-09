@@ -1,7 +1,7 @@
 from dataset import Dataset
 from decisiontree import DecisionTree
 from svc import SVCClassifier
-from optimizer import SVC_GRID, Simulation
+from annealer import SVC_GRID, Simulation
 
 import warnings
 warnings.filterwarnings("ignore")
