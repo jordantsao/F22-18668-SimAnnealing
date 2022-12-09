@@ -1,29 +1,28 @@
 from dataset import Dataset
 from decisiontree import DecisionTree
-from svc import SVCClassifier
-from annealer import SVC_GRID, Simulation
+from svc import SVCClassifier, SVC_GRID
+from decisiontree import DecisionTree, DT_GRID
+from annealer import Annealer
 
 import warnings
 warnings.filterwarnings("ignore")
 
 def main():
+    # initialize datasets
     fe = Dataset("feature-envy.arff")
-    dc = Dataset("data-class.arff")
-    gc = Dataset("god-class.arff")
-    lm = Dataset("long-method.arff")
     # print(fe.df[fe.df.is_feature_envy == b'true'])
     # print(len(fe.X_train[0]))
 
-    svc = SVCClassifier()
-
+    # initialize classifier
+    model = SVCClassifier()
     grid = SVC_GRID
-    sim = Simulation(grid, svc, fe)
-    sim.begin()
-    sim.test()
+    # model = DecisionTree()
+    # grid = DT_GRID
 
-    # dt = DecisionTree()
-    # dt.train_with_gridsearch(fe.X_train, fe.Y_train)
-    # print(dt.get_metrics(fe.X_test, fe.Y_test))
+    # initialize annealer
+    sim = Annealer(grid, model, fe)
+    sim.begin_simulation()
+    sim.test()
 
 if __name__ == "__main__":
     main()

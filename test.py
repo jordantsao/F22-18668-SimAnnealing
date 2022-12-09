@@ -1,36 +1,34 @@
 from dataset import Dataset
-from svc import SVCClassifier
+from svc import SVCClassifier, SVC_GRID
+from decisiontree import DecisionTree, DT_GRID
 
 import warnings
 warnings.filterwarnings("ignore")
 
 fe = Dataset("feature-envy.arff")
-svc = SVCClassifier()
-time = svc.gridsearch(fe.X_train, fe.Y_train)
-print (f'Duration: {time}')
-svc.train(fe.X_train, fe.Y_train)
-print(svc.get_metrics(fe.X_test, fe.Y_test))
-# svc.set_params({
-#     'kernel': 'sigmoid',
-#     'C': 100,
-#     'gamma': 0.001,
-#     'degree': 2,
-#     'tol': 0.1,
-#     'max_iter': 100
-# })
+# model = SVCClassifier()
+model = DecisionTree()
+grid  = DT_GRID
 
-TRIALS = 100
-avg_acc, avg_f1, avg_prec, avg_rec = 0, 0, 0, 0
+time = model.gridsearch(fe.X_train, fe.Y_train)
+# time = model.randomsearch(fe.X_train, fe.Y_train, grid)
+
+print (f'Duration: {time}')
+model.train(fe.X_train, fe.Y_train)
+print(model.get_metrics(fe.X_test, fe.Y_test))
+
+TRIALS = 1000
+avg_accuracy, avg_f1, avg_precision, avg_recall = 0, 0, 0, 0
 for i in range(TRIALS):
     fe.split_train_test()
-    svc.train(fe.X_train, fe.Y_train)
-    acc, f1, prec, rec = svc.get_metrics(fe.X_test, fe.Y_test)
-    avg_acc += acc
-    avg_f1 += f1
-    avg_prec += prec
-    avg_rec += rec
-avg_acc /= TRIALS
+    model.train(fe.X_train, fe.Y_train)
+    a, f, p, r = model.get_metrics(fe.X_test, fe.Y_test)
+    avg_accuracy += a
+    avg_f1 += f
+    avg_precision += p
+    avg_recall += r
+avg_accuracy /= TRIALS
 avg_f1 /= TRIALS
-avg_prec /= TRIALS
-avg_rec /= TRIALS
-print(f'Accuracy: {avg_acc}, F1: {avg_f1}, Precision: {avg_prec}, Recall: {avg_rec}')
+avg_precision /= TRIALS
+avg_recall /= TRIALS
+print(f'Accuracy: {avg_accuracy}, F1: {avg_f1}, Precision: {avg_precision}, Recall: {avg_recall}')
