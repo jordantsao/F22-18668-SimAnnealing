@@ -9,9 +9,9 @@ such that
                   C_upper
             0.8 = ∫ exp(-Δc/T_0) dΔc
                   0
-where c_upper is an arbitrary upper bound for cost difference
+where C_upper is an arbitrary upper bound for cost difference
 
-c_upper = 1.0 --> 2.15418
+C_upper = 1.0 --> 2.15418
         = 0.5 --> 0.57051
         = 0.4 --> 0.31836
         = 0.3 --> 0.17434
